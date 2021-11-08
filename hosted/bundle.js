@@ -6,7 +6,7 @@ var handleDomo = function handleDomo(e) {
     width: 'hide'
   }, 350);
 
-  if ($("domoName").val() == '' || $("#domoAge").val() == '') {
+  if ($("domoName").val() == '' || $("#domoAge").val() == '' || $("#domoGender").val() == '') {
     handleError("RAWR! All fields are required!");
     return false;
   }
@@ -15,6 +15,19 @@ var handleDomo = function handleDomo(e) {
     loadDomosFromServer();
   });
   return false;
+}; //DeleteCode
+
+
+var deleteDomo = function deleteDomo(e) {
+  // e.preventDefault();
+  $("#domoMessage").animate({
+    width: 'hide'
+  }, 350); // sendAjax('DELETE', $("#deleteForm").attr("action"), $("#deleteForm").serialize(), function () {
+  //     loadDomosFromServer();
+  // });
+  // return false;
+
+  handleError("RAWR! Tried to delete a Domo");
 };
 
 var DomoForm = function DomoForm(props) {
@@ -39,7 +52,21 @@ var DomoForm = function DomoForm(props) {
     type: "text",
     name: "age",
     placeholder: "Domo Age"
-  }), /*#__PURE__*/React.createElement("input", {
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "gender"
+  }, "Gender: "), /*#__PURE__*/React.createElement("select", {
+    id: "domoGender",
+    name: "gender",
+    placeholder: "Domo Gender"
+  }, /*#__PURE__*/React.createElement("option", {
+    disabled: true,
+    defaultValue: true,
+    hidden: true
+  }, "Domo Gender"), /*#__PURE__*/React.createElement("option", {
+    value: "Male"
+  }, "Male"), /*#__PURE__*/React.createElement("option", {
+    value: "Female"
+  }, "Female")), /*#__PURE__*/React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
@@ -62,7 +89,8 @@ var DomoList = function DomoList(props) {
   var domoNodes = props.domos.map(function (domo) {
     return /*#__PURE__*/React.createElement("div", {
       key: domo._id,
-      className: "domo"
+      className: "domo",
+      onSubmit: deleteDomo
     }, /*#__PURE__*/React.createElement("img", {
       src: "/assets/img/domoface.jpeg",
       alt: "domo face",
@@ -71,7 +99,13 @@ var DomoList = function DomoList(props) {
       className: "domoName"
     }, "Name: ", domo.name), /*#__PURE__*/React.createElement("h3", {
       className: "domoAge"
-    }, "Age: ", domo.age));
+    }, "Age: ", domo.age), /*#__PURE__*/React.createElement("h3", {
+      className: "domoGender"
+    }, "Gender: ", domo.gender), /*#__PURE__*/React.createElement("input", {
+      className: "deleteDomo",
+      type: "submit",
+      value: "Delete Domo"
+    }));
   });
   return /*#__PURE__*/React.createElement("div", {
     className: "domoList"

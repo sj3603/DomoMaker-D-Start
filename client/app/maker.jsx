@@ -3,7 +3,7 @@ const handleDomo = (e) => {
 
     $("#domoMessage").animate({ width: 'hide' }, 350);
 
-    if ($("domoName").val() == '' || $("#domoAge").val() == '') {
+    if ($("domoName").val() == '' || $("#domoAge").val() == '' || $("#domoGender").val() == '') {
         handleError("RAWR! All fields are required!");
         return false;
     }
@@ -13,6 +13,20 @@ const handleDomo = (e) => {
     });
 
     return false;
+};
+
+//DeleteCode
+const deleteDomo = (e) => {
+    // e.preventDefault();
+
+    $("#domoMessage").animate({ width: 'hide' }, 350);
+
+    // sendAjax('DELETE', $("#deleteForm").attr("action"), $("#deleteForm").serialize(), function () {
+    //     loadDomosFromServer();
+    // });
+
+    // return false;
+    handleError("RAWR! Tried to delete a Domo");
 };
 
 const DomoForm = (props) => {
@@ -28,6 +42,12 @@ const DomoForm = (props) => {
             <input id="domoName" type="text" name="name" placeholder="Domo Name" />
             <label htmlFor="age">Age: </label>
             <input id="domoAge" type="text" name="age" placeholder="Domo Age" />
+            <label htmlFor="gender">Gender: </label>
+            <select id="domoGender" name="gender" placeholder="Domo Gender">
+                <option disabled defaultValue hidden>Domo Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
             <input type="hidden" name="_csrf" value={props.csrf} />
             <input className="makeDomoSubmit" type="submit" value="Make Domo" />
         </form>
@@ -45,10 +65,12 @@ const DomoList = function (props) {
 
     const domoNodes = props.domos.map(function (domo) {
         return (
-            <div key={domo._id} className="domo">
+            <div key={domo._id} className="domo" onSubmit={deleteDomo}>
                 <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
+                <h3 className="domoGender">Gender: {domo.gender}</h3>
+                <input className="deleteDomo" type="submit" value="Delete Domo" />
             </div>
         );
     });

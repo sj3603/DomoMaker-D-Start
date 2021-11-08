@@ -56,34 +56,6 @@ const getDomos = (request, response) => {
   });
 };
 
-//DeleteCode
-const deleteDomo = (request, response) => {
-  const req = request;
-  const res = response;
-  if (!req.body.name) {
-    return res.status(400).json({ error: 'RAWR! Name is required' });
-  }
-  const name = `${req.body.name}`;
-  Domo.DomoModel.findByName(req.body.name, (err, doc) => {
-    if (!doc) { //check if it exists
-
-      return res.status(400).json({ error: 'RAWR! Domo does not exist!' }); //aborts if it does not exist
-    }
-    else { //Continue on otherwise 
-      const callback = (err, doc) => {
-        if (err) {
-          return res.status(500).json({ err }); //if error, return
-        }
-
-        //return success 
-        return res.json(doc);
-      };
-
-      Domo.DomoModel.delete(req.body.name, callback);
-    }
-  });
-};
-
 module.exports.makerPage = makerPage;
 module.exports.make = makeDomo;
 module.exports.getDomos = getDomos;

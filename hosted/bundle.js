@@ -15,18 +15,12 @@ var handleDomo = function handleDomo(e) {
     loadDomosFromServer();
   });
   return false;
-}; //DeleteCode
-
+};
 
 var deleteDomo = function deleteDomo(e) {
-  // e.preventDefault();
   $("#domoMessage").animate({
     width: 'hide'
-  }, 350); // sendAjax('DELETE', $("#deleteForm").attr("action"), $("#deleteForm").serialize(), function () {
-  //     loadDomosFromServer();
-  // });
-  // return false;
-
+  }, 350);
   handleError("RAWR! Tried to delete a Domo");
 };
 
@@ -89,8 +83,7 @@ var DomoList = function DomoList(props) {
   var domoNodes = props.domos.map(function (domo) {
     return /*#__PURE__*/React.createElement("div", {
       key: domo._id,
-      className: "domo",
-      onSubmit: deleteDomo
+      className: "domo"
     }, /*#__PURE__*/React.createElement("img", {
       src: "/assets/img/domoface.jpeg",
       alt: "domo face",
@@ -101,11 +94,7 @@ var DomoList = function DomoList(props) {
       className: "domoAge"
     }, "Age: ", domo.age), /*#__PURE__*/React.createElement("h3", {
       className: "domoGender"
-    }, "Gender: ", domo.gender), /*#__PURE__*/React.createElement("input", {
-      className: "deleteDomo",
-      type: "submit",
-      value: "Delete Domo"
-    }));
+    }, "Gender: ", domo.gender));
   });
   return /*#__PURE__*/React.createElement("div", {
     className: "domoList"

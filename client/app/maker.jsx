@@ -15,17 +15,8 @@ const handleDomo = (e) => {
     return false;
 };
 
-//DeleteCode
 const deleteDomo = (e) => {
-    // e.preventDefault();
-
     $("#domoMessage").animate({ width: 'hide' }, 350);
-
-    // sendAjax('DELETE', $("#deleteForm").attr("action"), $("#deleteForm").serialize(), function () {
-    //     loadDomosFromServer();
-    // });
-
-    // return false;
     handleError("RAWR! Tried to delete a Domo");
 };
 
@@ -65,12 +56,12 @@ const DomoList = function (props) {
 
     const domoNodes = props.domos.map(function (domo) {
         return (
-            <div key={domo._id} className="domo" onSubmit={deleteDomo}>
+            <div key={domo._id} className="domo">
                 <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
                 <h3 className="domoGender">Gender: {domo.gender}</h3>
-                <input className="deleteDomo" type="submit" value="Delete Domo" />
+                {/* <input className="deleteDomo" type="submit" value="Delete Domo" /> */}
             </div>
         );
     });

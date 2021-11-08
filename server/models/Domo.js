@@ -57,11 +57,9 @@ DomoSchema.statics.findByName = (nameIn, callback) => {
     nameIn,
   };
   return DomoModel.findOne(search, callback);
-}
+};
 
-DomoSchema.statics.delete = (nameIn, callback) => {
-  return DomoModel.deleteOne({name: nameIn}).exec(callback);
-}
+DomoSchema.statics.delete = (name, callback) => DomoModel.deleteOne({ name }).exec(callback);
 
 DomoModel = mongoose.model('Domo', DomoSchema);
 

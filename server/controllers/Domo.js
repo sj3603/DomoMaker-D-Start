@@ -56,6 +56,20 @@ const getDomos = (request, response) => {
   });
 };
 
+const deleteDomo = (request, response) => {
+  const req = request;
+  const res = response;
+
+  return Domo.DomoModel.delete(req.body.deleteName, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An Error occured' });
+    }
+    return res.json({ StringToDelete: docs });
+  });
+};
+
 module.exports.makerPage = makerPage;
 module.exports.make = makeDomo;
 module.exports.getDomos = getDomos;
+module.exports.delete = deleteDomo;

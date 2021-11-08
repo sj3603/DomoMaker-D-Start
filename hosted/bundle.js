@@ -6,7 +6,7 @@ var handleDomo = function handleDomo(e) {
     width: 'hide'
   }, 350);
 
-  if ($("domoName").val() == '' || $("#domoAge").val() == '' || $("#domoGender").val() == '') {
+  if ($("#domoName").val() == '' || $("#domoAge").val() == '' || $("#domoGender").val() == '') {
     handleError("RAWR! All fields are required!");
     return false;
   }
@@ -17,11 +17,21 @@ var handleDomo = function handleDomo(e) {
   return false;
 };
 
-var deleteDomo = function deleteDomo(e) {
+var handleDelete = function handleDelete(e) {
+  e.preventDefault();
   $("#domoMessage").animate({
     width: 'hide'
   }, 350);
-  handleError("RAWR! Tried to delete a Domo");
+
+  if ($("#domoDeleteName").val() == '') {
+    handleError("RAWR! Name is required!");
+    return false;
+  }
+
+  sendAjax('DELETE', $("#domoDeleteForm").attr("action"), $("#domoDeleteForm").serialize(), function () {
+    loadDomosFromServer();
+  });
+  return false;
 };
 
 var DomoForm = function DomoForm(props) {
@@ -71,6 +81,32 @@ var DomoForm = function DomoForm(props) {
   }));
 };
 
+var DomoDeleteForm = function DomoDeleteForm(props) {
+  return /*#__PURE__*/React.createElement("form", {
+    id: "domoDeleteForm",
+    onSubmit: handleDelete,
+    name: "domoDeleteForm",
+    action: "/delete",
+    method: "DELETE",
+    className: "domoForm"
+  }, /*#__PURE__*/React.createElement("label", {
+    htmlFor: "deleteName"
+  }, "Name: "), /*#__PURE__*/React.createElement("input", {
+    id: "domoDeleteName",
+    type: "text",
+    name: "deleteName",
+    placeholder: "Domo Name"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "hidden",
+    name: "_csrf",
+    value: props.csrf
+  }), /*#__PURE__*/React.createElement("input", {
+    className: "makeDomoSubmit",
+    type: "submit",
+    value: "Delete Domo"
+  }));
+};
+
 var DomoList = function DomoList(props) {
   if (props.domos.length === 0) {
     return /*#__PURE__*/React.createElement("div", {
@@ -113,6 +149,9 @@ var setup = function setup(csrf) {
   ReactDOM.render( /*#__PURE__*/React.createElement(DomoForm, {
     csrf: csrf
   }), document.querySelector("#makeDomo"));
+  ReactDOM.render( /*#__PURE__*/React.createElement(DomoDeleteForm, {
+    csrf: csrf
+  }), document.querySelector("#deleteDomo"));
   ReactDOM.render( /*#__PURE__*/React.createElement(DomoList, {
     domos: []
   }), document.querySelector("#domos"));

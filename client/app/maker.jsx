@@ -3,7 +3,7 @@ const handleDomo = (e) => {
 
     $("#domoMessage").animate({ width: 'hide' }, 350);
 
-    if ($("domoName").val() == '' || $("#domoAge").val() == '' || $("#domoGender").val() == '') {
+    if ($("#domoName").val() == '' || $("#domoAge").val() == '' || $("#domoGender").val() == '') {
         handleError("RAWR! All fields are required!");
         return false;
     }
@@ -15,9 +15,21 @@ const handleDomo = (e) => {
     return false;
 };
 
-const deleteDomo = (e) => {
+const handleDelete = (e) => {
+    e.preventDefault();
+
     $("#domoMessage").animate({ width: 'hide' }, 350);
-    handleError("RAWR! Tried to delete a Domo");
+
+    if ($("#domoDeleteName").val() == '') {
+        handleError("RAWR! Name is required!");
+        return false;
+    }
+
+    sendAjax('DELETE', $("#domoDeleteForm").attr("action"), $("#domoDeleteForm").serialize(), function () {
+        loadDomosFromServer();
+    });
+
+    return false;
 };
 
 const DomoForm = (props) => {
@@ -45,6 +57,23 @@ const DomoForm = (props) => {
     );
 };
 
+const DomoDeleteForm = (props) => {
+    return (
+        <form id="domoDeleteForm"
+            onSubmit={handleDelete}
+            name="domoDeleteForm"
+            action="/delete"
+            method="DELETE"
+            className="domoForm"
+        >
+            <label htmlFor="deleteName">Name: </label>
+            <input id="domoDeleteName" type="text" name="deleteName" placeholder="Domo Name" />
+            <input type="hidden" name="_csrf" value={props.csrf} />
+            <input className="makeDomoSubmit" type="submit" value="Delete Domo" />
+        </form>
+    );
+};
+
 const DomoList = function (props) {
     if (props.domos.length === 0) {
         return (
@@ -61,7 +90,6 @@ const DomoList = function (props) {
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
                 <h3 className="domoGender">Gender: {domo.gender}</h3>
-                {/* <input className="deleteDomo" type="submit" value="Delete Domo" /> */}
             </div>
         );
     });
@@ -84,6 +112,10 @@ const loadDomosFromServer = () => {
 const setup = function (csrf) {
     ReactDOM.render(
         <DomoForm csrf={csrf} />, document.querySelector("#makeDomo")
+    );
+
+    ReactDOM.render(
+        <DomoDeleteForm csrf={csrf} />, document.querySelector("#deleteDomo")
     );
 
     ReactDOM.render(
